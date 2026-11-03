@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赖凤 - UE场景地编 | 个人交互式简历</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+            color: #2d3748;
+            line-height: 1.7;
+            padding: 40px 16px;
+            animation: pageFadeIn 0.8s ease-in-out;
+        }
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .back-top {
+            position: fixed;
+            bottom: 30px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #2b3a55;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+        .back-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-top:hover {
+            background-color:#405477;
+            transform: translateY(-3px);
+        }
+
+        .resume-container {
+            max-width:1180px;
+            margin: 0 auto;
+            border-radius:16px;
+            overflow:hidden;
+            box-shadow: 0 10px 30px rgba(26, 32, 44, 0.12);
+            display: grid;
+            grid-template-columns:340px 1fr;
+            background:#fff;
+        }
+        .sidebar-left {
+            background: linear-gradient(160deg, #24344e, #2b3a55);
+            color:#ffffff;
+            padding:42px 30px;
+        }
+        .name-title{
+            font-size:28px;
+            font-weight:700;
+            margin-bottom:4px;
+        }
+        .job-target{
+            font-size:17px;
+            color:#94b8f0;
+            margin-bottom:32px;
+        }
+        .side-block{
+            margin-bottom:36px;
+        }
+        .side-block h3{
+            font-size:18px;
+            padding-bottom:9px;
+            border-bottom: 1px solid #485978;
+            margin-bottom:16px;
+        }
+        .contact-item{
+            display:flex;
+            align-items:center;
+            gap:11px;
+            font-size:14.2px;
+            margin-bottom:12px;
+            transition: transform 0.25s ease;
+        }
+        .contact-item:hover{
+            transform: translateX(6px);
+            color:#b4d0fc;
+        }
+        .skill-tag{
+            display:inline-block;
+            background:#3c4f70;
+            padding:6px 11px;
+            border-radius:7px;
+            font-size:13px;
+            margin:5px 4px;
+            transition: all 0.28s ease;
+            cursor:default;
+        }
+        .skill-tag:hover{
+            background:#5472a3;
+            transform: scale(1.07);
+        }
+        .self-desc{
+            font-size:14px;
+            color:#e2e8f0;
+        }
+        .main-content{
+            padding:44px 48px;
+        }
+        .section-item{
+            margin-bottom:46px;
+        }
+        .section-title{
+            font-size:21px;
+            color:#24344e;
+            border-left:5px solid #2b3a55;
+            padding-left:14px;
+            margin-bottom:20px;
+            transition: all 0.3s ease;
+        }
+        .section-title:hover{
+            border-left-color:#4b699c;
+            padding-left:18px;
+        }
+        .card-box{
+            padding:14px 16px;
+            border-radius:10px;
+            transition: all 0.32s ease;
+            margin-bottom:24px;
+        }
+        .card-box:hover{
+            box-shadow: 0 6px 18px rgba(43,58,85,0.09);
+            transform: translateY(-4px);
+        }
+        .card-head{
+            display:flex;
+            justify-content:space-between;
+            font-weight:600;
+            font-size:16.5px;
+            margin-bottom:7px;
+        }
+        .card-time{
+            color:#64748b;
+            font-weight:normal;
+            font-size:14px;
+        }
+        .card-subtext{
+            font-size:14.3px;
+            color:#475569;
+            margin-bottom:9px;
+        }
+        ul{
+            padding-left:22px;
+            font-size:14.6px;
+            color:#334155;
+        }
+        li{
+            margin-bottom:8px;
+            transition: all 0.2s ease;
+        }
+        li:hover{
+            color:#2b3a55;
+        }
+        .nav-wrap{
+            display:flex;
+            gap:12px;
+            margin-bottom:36px;
+            flex-wrap:wrap;
+        }
+        .nav-wrap a{
+            text-decoration:none;
+            color:#4a5568;
+            border:1px solid #cbd5e0;
+            padding:6px 14px;
+            border-radius:20px;
+            font-size:13.5px;
+            transition: all 0.25s ease;
+        }
+        .nav-wrap a:hover{
+            background-color:#2b3a55;
+            color:#fff;
+            border-color:#2b3a55;
+        }
+
+        /* =====作品集网格样式===== */
+        .portfolio-category{
+            margin-bottom:32px;
+        }
+        .portfolio-category h4{
+            color:#2b3a55;
+            margin-bottom:14px;
+            font-size:17px;
+        }
+        .portfolio-grid{
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap:20px;
+        }
+        .portfolio-card{
+            border-radius:12px;
+            overflow:hidden;
+            border:1px solid #e2e8f0;
+            transition:0.3s ease;
+            cursor:pointer;
+        }
+        .portfolio-card:hover{
+            transform: translateY(-6px);
+            box-shadow:0 10px 24px rgba(43,58,85,0.12);
+        }
+        .portfolio-img-wrap{
+            width:100%;
+            height:170px;
+            background:#cbd5e0;
+            overflow:hidden;
+        }
+        .portfolio-img-wrap img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            transition:0.4s ease;
+        }
+        .portfolio-card:hover .portfolio-img-wrap img{
+            transform: scale(1.06);
+        }
+        .portfolio-info{
+            padding:14px;
+        }
+        .portfolio-info h5{
+            font-size:14.5px;
+            margin-bottom:4px;
+            color:#24344e;
+        }
+        .portfolio-info p{
+            font-size:12.5px;
+            color:#64748b;
+        }
+
+        /* =====大图弹窗预览===== */
+        .lightbox{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.85);
+            display:none;
+            align-items:center;
+            justify-content:center;
+            z-index:999;
+            padding:20px;
+        }
+        .lightbox img{
+            max-width:90%;
+            max-height:90%;
+            border-radius:8px;
+        }
+        .lightbox.show{
+            display:flex;
+        }
+        .lightbox-close{
+            position:absolute;
+            top:24px;
+            right:30px;
+            color:#fff;
+            font-size:32px;
+            cursor:pointer;
+        }
+
+        @media (max-width:920px){
+            .resume-container{
+                grid-template-columns: 1fr;
+            }
+            .sidebar-left{
+                padding:30px 22px;
+            }
+            .main-content{
+                padding:28px 22px;
+            }
+            .portfolio-grid{
+                grid-template-columns: repeat(2,1fr);
+            }
+        }
+        @media (max-width:560px){
+            .portfolio-grid{
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="resume-container">
+    <div class="sidebar-left">
+        <div class="name-title">赖凤</div>
+        <div class="job-target">求职意向：UE 场景地编</div>
+
+        <div class="side-block">
+            <h3>基本信息</h3>
+            <div class="contact-item"><i class="fa fa-user fa-fw"></i>女｜汉族</div>
+            <div class="contact-item"><i class="fa fa-birthday-cake fa-fw"></i>出生：2004.09</div>
+            <div class="contact-item"><i class="fa fa-map-marker fa-fw"></i>四川省成都市</div>
+            <div class="contact-item"><i class="fa fa-phone fa-fw"></i>17781036737</div>
+            <div class="contact-item"><i class="fa fa-envelope fa-fw"></i>3387294208@qq.com</div>
+        </div>
+
+        <div class="side-block">
+            <h3>技能特长</h3>
+            <span class="skill-tag">Blender</span>
+            <span class="skill-tag">3ds Max</span>
+            <span class="skill-tag">ZBrush</span>
+            <span class="skill-tag">UE4/UE5</span>
+            <span class="skill-tag">Unity</span>
+            <span class="skill-tag">PlayMaker</span>
+            <span class="skill-tag">UV拆分</span>
+            <span class="skill-tag">PBR材质</span>
+            <span class="skill-tag">场景光照</span>
+            <span class="skill-tag">性能优化</span>
+            <span class="skill-tag">Sequencer</span>
+            <span class="skill-tag">Photoshop</span>
+        </div>
+
+        <div class="side-block">
+            <h3>自我评价</h3>
+            <p class="self-desc">
+                虚拟现实技术应用专业，可使用3ds Max、Blender制作硬表面中模；熟悉UE4/UE5关卡搭建、光照氛围调试与基础粒子特效；拥有Unity场景开发经验，掌握PBR材质制作与PS基础图像处理。做事踏实，学习意愿强，具备团队协作能力，希望在岗位中不断提升场景制作能力。
+            </p>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="nav-wrap">
+            <a href="#edu">教育背景</a>
+            <a href="#campus">在校经历</a>
+            <a href="#project">项目经验</a>
+            <a href="#portfolio">作品集</a>
+        </div>
+
+        <div id="edu" class="section-item">
+            <h2 class="section-title">教育背景</h2>
+            <div class="card-box">
+                <div class="card-head">
+                    <span>成都职业技术学院｜虚拟现实技术应用（专科）</span>
+                    <span class="card-time">2024.09‑2027.07</span>
+                </div>
+                <div class="card-subtext">平均绩点：3.66/5.0，专业排名前17%（总73人）</div>
+                <div class="card-subtext">核心课程：数字化模型与动画、游戏道具制作、虚拟现实程序设计、虚拟现实综合应用</div>
+                <ul>
+                    <li>2024‑2025学年 国家励志奖学金</li>
+                    <li>2024年 四川省大学生农业创意设计比赛三等奖</li>
+                    <li>2025‑2026学年 校级“优秀学生干部”</li>
+                    <li>2025年 中国大学生计算机设计大赛四川省级赛一等奖</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="campus" class="section-item">
+            <h2 class="section-title">在校经历</h2>
+            <div class="card-box">
+                <div class="card-head">
+                    <span>院学生会组织部｜部长</span>
+                    <span class="card-time">2025.09‑2026.06</span>
+                </div>
+                <ul>
+                    <li>负责学生会干部选拔、培训、考核与管理工作，牵头制定学生干部任职标准，统筹干部换届、述职评议和评优表彰，加强学生组织队伍建设。</li>
+                    <li>协助党组织开展青年学生思想引领、政治理论学习及相关教育活动，独立撰写活动方案，落地十余场活动，规范组织流程，推动学生会组织规范化建设。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="project" class="section-item">
+            <h2 class="section-title">项目经验</h2>
+            <div class="card-box">
+                <div class="card-head">UE5 荒岛建筑场景短片</div>
+                <ul>
+                    <li>完成荒岛工业建筑场景的全流程制作，包括地形环境搭建、模块化建筑资产摆放、植被与水体布置。</li>
+                    <li>使用UE5进行场景灯光、雾效、材质与氛围调试，构建具有空间层次和视觉焦点的游戏环境。</li>
+                    <li>设计Sequencer多镜头展示画面，通过镜头运动、景别变化和构图优化，突出主体建筑与荒岛环境关系。</li>
+                    <li>输出场景展示短片，熟悉游戏场景美术、环境搭建、光照渲染与镜头表现完整流程。</li>
+                </ul>
+            </div>
+            <div class="card-box">
+                <div class="card-head">2D 平台跳跃游戏</div>
+                <ul>
+                    <li>基于PlayMaker官方教程原型二次开发，独立完成角色换皮、原创关卡布局；新增Loading界面、胜负判定、通关奖励、配音音效。</li>
+                    <li>完成资源适配，打包导出微信小游戏版本，调试状态机与碰撞Bug，熟悉游戏完整落地流程。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="portfolio" class="section-item">
+            <h2 class="section-title">作品集</h2>
+
+            <!-- 分类1：UE5场景地编 -->
+            <div class="portfolio-category">
+                <h4>🌊 UE5 场景地编作品</h4>
+                <div class="portfolio-grid">
+                    <div class="portfolio-card" data-img="index_files/ue5_island1.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/ue5_island1.jpg" alt="UE5荒岛场景1"></div>
+                        <div class="portfolio-info"><h5>荒岛场景 镜头1</h5><p>UE5地形、水体、植被搭建</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/ue5_island2.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/ue5_island2.jpg" alt="UE5荒岛场景2"></div>
+                        <div class="portfolio-info"><h5>荒岛场景 镜头2</h5><p>光照、雾效氛围调试</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/ue5_island3.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/ue5_island3.jpg" alt="UE5荒岛场景3"></div>
+                        <div class="portfolio-info"><h5>荒岛场景 镜头3</h5><p>模块化建筑资产摆放</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/scene_inn.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/scene_inn.jpg" alt="古风客栈场景"></div>
+                        <div class="portfolio-info"><h5>古风客栈场景</h5><p>国风场景搭建渲染</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/scene_cartoon.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/scene_cartoon.jpg" alt="卡通关卡场景"></div>
+                        <div class="portfolio-info"><h5>卡通关卡场景</h5><p>Q版游戏场景地编</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分类2：3D模型资产 -->
+            <div class="portfolio-category">
+                <h4>⚔️ 3D模型 & 硬表面资产</h4>
+                <div class="portfolio-grid">
+                    <div class="portfolio-card" data-img="index_files/model_guang.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/model_guang.jpg" alt="古建模型"></div>
+                        <div class="portfolio-info"><h5>古风建筑模型</h5><p>3ds Max 硬表面建模</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/model_gun.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/model_gun.jpg" alt="枪械模型"></div>
+                        <div class="portfolio-info"><h5>枪械道具模型</h5><p>PBR材质制作</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/model_marble.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/model_marble.jpg" alt="大理石材质"></div>
+                        <div class="portfolio-info"><h5>大理石材质球</h5><p>SP材质绘制</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/model_ring.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/model_ring.jpg" alt="环形武器"></div>
+                        <div class="portfolio-info"><h5>环形武器模型</h5><p>硬表面建模、拓扑UV</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/model_spear.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/model_spear.jpg" alt="长矛模型"></div>
+                        <div class="portfolio-info"><h5>长矛道具模型</h5><p>3D资产建模渲染</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/model_sword.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/model_sword.jpg" alt="长剑模型"></div>
+                        <div class="portfolio-info"><h5>长剑道具模型</h5><p>PBR全流程资产</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分类3：游戏UI界面 -->
+            <div class="portfolio-category">
+                <h4>🎮 游戏UI & 像素界面</h4>
+                <div class="portfolio-grid">
+                    <div class="portfolio-card" data-img="index_files/game_start.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/game_start.jpg" alt="游戏开始页"></div>
+                        <div class="portfolio-info"><h5>游戏开始UI</h5><p>2D小游戏界面设计</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/game_win.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/game_win.jpg" alt="胜利界面"></div>
+                        <div class="portfolio-info"><h5>胜利结算UI</h5><p>游戏反馈界面</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/game_fail.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/game_fail.jpg" alt="失败界面"></div>
+                        <div class="portfolio-info"><h5>失败界面UI</h5><p>游戏状态界面</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/game_level.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/game_level.jpg" alt="选关界面"></div>
+                        <div class="portfolio-info"><h5>选关界面UI</h5><p>关卡选择页面</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/game_autumn.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/game_autumn.jpg" alt="秋景像素图"></div>
+                        <div class="portfolio-info"><h5>像素秋景图</h5><p>像素美术绘制</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/game_snow.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/game_snow.jpg" alt="雪景像素图"></div>
+                        <div class="portfolio-info"><h5>像素雪景图</h5><p>像素场景原画</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/game_pixel_poster.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/game_pixel_poster.jpg" alt="像素海报"></div>
+                        <div class="portfolio-info"><h5>像素游戏海报</h5><p>像素风格宣传图</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/game_eliminate_poster.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/game_eliminate_poster.jpg" alt="消除游戏海报"></div>
+                        <div class="portfolio-info"><h5>消除游戏海报</h5><p>休闲游戏宣传</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/game_xiongchutou_poster.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/game_xiongchutou_poster.jpg" alt="熊出没海报"></div>
+                        <div class="portfolio-info"><h5>主题游戏海报</h5><p>IP衍生游戏海报</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分类4：平面设计作品 -->
+            <div class="portfolio-category">
+                <h4>🖼️ 平面设计 & 宣传物料</h4>
+                <div class="portfolio-grid">
+                    <div class="portfolio-card" data-img="index_files/design_kindergarten.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/design_kindergarten.jpg" alt="幼儿园展板"></div>
+                        <div class="portfolio-info"><h5>幼儿园展板</h5><p>卡通宣传物料</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/design_langjiu.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/design_langjiu.jpg" alt="郎酒国风海报"></div>
+                        <div class="portfolio-info"><h5>郎酒国风海报</h5><p>国潮商业海报</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/design_langjiu_outdoor.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/design_langjiu_outdoor.jpg" alt="郎酒户外广告"></div>
+                        <div class="portfolio-info"><h5>郎酒户外广告</h5><p>户外展牌设计</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/design_mother.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/design_mother.jpg" alt="母亲节海报"></div>
+                        <div class="portfolio-info"><h5>母亲节海报</h5><p>节日海报设计</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/design_shuirun.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/design_shuirun.jpg" alt="水润宣传单"></div>
+                        <div class="portfolio-info"><h5>水润宣传单页</h5><p>产品宣传单设计</p></div>
+                    </div>
+                    <div class="portfolio-card" data-img="index_files/design_vr.jpg">
+                        <div class="portfolio-img-wrap"><img src="index_files/design_vr.jpg" alt="VR宣传海报"></div>
+                        <div class="portfolio-info"><h5>VR主题海报</h5><p>科技风海报</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 大图预览弹窗 -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img id="light-img" src="" alt="大图预览">
+</div>
+
+<div class="back-top" id="backTop">
+    <i class="fa fa-arrow-up"></i>
+</div>
+
+<script>
+    // 返回顶部
+    const backTopBtn = document.getElementById('backTop');
+    window.addEventListener('scroll', ()=>{
+        if(window.scrollY > 350){
+            backTopBtn.classList.add('show');
+        }else{
+            backTopBtn.classList.remove('show');
+        }
+    })
+    backTopBtn.addEventListener('click',()=>{
+        window.scrollTo({top:0, behavior:'smooth'})
+    })
+
+    // 图片弹窗放大
+    const lightbox = document.getElementById('lightbox');
+    const lightImg = document.getElementById('light-img');
+    const closeBtn = document.querySelector('.lightbox-close');
+    const cards = document.querySelectorAll('.portfolio-card');
+
+    cards.forEach(card=>{
+        card.addEventListener('click',()=>{
+            const src = card.getAttribute('data-img');
+            lightImg.src = src;
+            lightbox.classList.add('show');
+        })
+    })
+    closeBtn.addEventListener('click',()=> lightbox.classList.remove('show'));
+    lightbox.addEventListener('click',(e)=>{
+        if(e.target === lightbox) lightbox.classList.remove('show');
+    })
+</script>
+</body>
+</html>
